@@ -1,0 +1,40 @@
+{
+  "name": "@moltlang/mcp-server",
+  "version": "0.1.0",
+  "description": "MoltLang MCP Server - AI-optimized language for efficient agent-to-agent communication",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "start:stdio": "node dist/index.js --stdio",
+    "test": "node --test",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "keywords": [
+    "moltlang",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "translation",
+    "agent"
+  ],
+  "author": "Jason",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "@types/node-fetch": "^2.6.11",
+    "typescript-eslint": "^8.0.0",
+    "eslint": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
