@@ -19,6 +19,7 @@ export async function handleTranslateToMolt(args: { text: string }): Promise<{
   content: Array<{ type: string; text: string }>;
 }> {
   try {
+    console.error(`[MoltLang] Translating: ${args.text.substring(0, 50)}...`);
     const result = await translateToMolt(args.text);
 
     // Embed metadata in response for minimal token overhead
@@ -62,6 +63,7 @@ export async function handleTranslateFromMolt(args: { molt: string }): Promise<{
       ]
     };
   } catch (error) {
+    console.error(`[MoltLang] Translation error:`, error);
     return {
       content: [
         {

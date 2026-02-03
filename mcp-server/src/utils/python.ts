@@ -116,9 +116,9 @@ import sys
 import json
 
 sys.path.insert(0, 'src')
-from moltlang import translate_to_molt
+from moltlang import translate_to_molt_result
 
-result = translate_to_molt("${sanitizedText}")
+result = translate_to_molt_result("${sanitizedText}")
 
 output = {
     "text": result.text,
@@ -148,9 +148,9 @@ import sys
 import json
 
 sys.path.insert(0, 'src')
-from moltlang import translate_from_molt
+from moltlang import translate_from_molt_result
 
-result = translate_from_molt("${sanitizedMolt}")
+result = translate_from_molt_result("${sanitizedMolt}")
 
 output = {
     "text": result.text,

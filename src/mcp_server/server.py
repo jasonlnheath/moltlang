@@ -18,9 +18,10 @@ from mcp.types import (
     ListToolsResult,
     Tool,
     TextContent,
+    ServerCapabilities,
 )
 
-from moltlang import MoltTranslator, MoltValidator, translate_to_molt, translate_from_molt
+from moltlang import MoltTranslator, MoltValidator, translate_to_molt, translate_from_molt, translate_to_molt_result, translate_from_molt_result
 
 
 class MCPServer:
@@ -293,10 +294,7 @@ async def main():
             InitializationOptions(
                 server_name="moltlang",
                 server_version="0.1.0",
-                capabilities=mcp_server.get_capabilities(
-                    notification_options=None,
-                    experimental_capabilities=None,
-                ),
+                capabilities={"tools": {}},
             ),
         )
 

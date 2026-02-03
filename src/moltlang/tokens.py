@@ -183,7 +183,7 @@ class TokenRegistry:
     """
 
     _instance: "TokenRegistry | None" = None
-    _tokens: dict[str, Token] = field(default_factory=dict)
+    _tokens: dict[str, Token] = None
     _custom_tokens: dict[str, Token] = field(default_factory=dict)
 
     def __new__(cls) -> "TokenRegistry":
@@ -195,6 +195,8 @@ class TokenRegistry:
 
     def _initialize(self) -> None:
         """Initialize the token registry with default tokens."""
+        # Initialize _tokens as a mutable dict
+        self._tokens = {}
         # Register all TokenType values as tokens
         for token_type in TokenType:
             self._tokens[token_type.value] = Token(type=token_type)

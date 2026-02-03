@@ -1,0 +1,49 @@
+154f717 feat: MoltLang MVP - AI-optimized language for agent-to-agent communication
+
+Core Implementation:
+- Python translation library with token system
+- TypeScript MCP server for Claude/agent integration
+- Bidirectional translation: English ↔ MoltLang
+- Case-insensitive parser (LLM-friendly)
+- Multi-operation support
+- Modifier tokens (async, parallel, cached, batch)
+
+Token Categories:
+- OP: Operations (fetch, parse, transform, validate, filter, etc.)
+- SRC: Sources (api, db, file, mem, stream, queue, cache)
+- RET: Return types (json, text, bin, stream, bool, num, list, dict)
+- PARAM: Parameters (token, key, query, body, header, timeout, etc.)
+- CTL: Control flow (if, else, loop, break, continue, try, catch)
+- TYPE: Data types (str, int, float, bool, list, dict, any)
+- ERR: Error handling (retry, fail, log, ignore)
+- MOD: Modifiers (async, batch, parallel, cached)
+
+MCP Tools:
+- molt: English→MoltLang translation
+- unmolt: MoltLang→English translation
+- validate_molt: Translation quality validation
+- list_tokens: Browse available tokens
+- get_efficiency: Calculate token reduction efficiency
+
+Test Results (Round 1):
+- 7 tests completed with Claude Opus ↔ GLM-4.5-Air
+- Average efficiency: 79.89% (exceeds 50-70% goal)
+- Best efficiency: 89.66% token reduction
+- Multi-operation detection verified working
+- Cross-model AI-to-AI communication confirmed
+
+Design Philosophy:
+- LLM-friendly: Accommodates natural LLM behavior (lowercase, etc.)
+- Precision over ambiguity: Structured tokens eliminate human language vagueness
+- Efficiency: 70-90% token reduction for common AI operations
+- Machine-first: Optimized for AI-to-AI communication
+
+Next Steps:
+- Round 2 testing with Claude Haiku
+- MCP server integration testing
+- Public deployment preparation
+- OpenClaw marketplace submission
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+
+─────────────────────────────────────────
