@@ -42,13 +42,25 @@ Next Steps (COMPLETED):
 ✅ Fixed MCP server integration - Python bridge now returns TranslationResult objects
 ✅ Configured Claude Code for both GLM and Anthropic models
 ✅ Comprehensive testing and verification completed
+✅ Added Claude Code CLI MCP configuration (.claude/settings.json)
+✅ Fixed MCP server entry point check for Windows compatibility
 
 Next Steps (NEW):
-- Test MCP tools in Claude Code GLM session
+- Test MCP tools in Claude Code ANTHROPIC session (GLM doesn't load .claude/settings.json MCPs)
 - Monitor for any runtime issues in production
 - Prepare documentation for MCP server usage
 - Explore adding cache functionality to TypeScript bridge
 - Consider adding more sophisticated validation rules
+
+MCP Tools Availability:
+- molt: English→MoltLang (50-70% token reduction)
+- unmolt: MoltLang→English translation
+- validate_molt: Validate MoltLang translation quality
+- list_tokens: List available MoltLang tokens
+- get_efficiency: Calculate token efficiency vs English
+
+NOTE: MCP servers configured in .claude/settings.json are ONLY loaded by Anthropic models.
+GLM sessions require direct MCP server invocation or different configuration method.
 
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 

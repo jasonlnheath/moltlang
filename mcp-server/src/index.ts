@@ -128,9 +128,8 @@ async function main() {
   }
 }
 
-// Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(console.error);
-}
+// Run if called directly - always run main() for MCP server
+// The MCP server is designed to run as a standalone process, not as a library
+main().catch(console.error);
 
 export { createServer, mainStdio, mainSSE, main };
