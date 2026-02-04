@@ -271,10 +271,10 @@ class MoltValidator:
                 )
             )
 
-        # Check token format
+        # Check token format (case-insensitive for LLM-friendliness)
         invalid_tokens = re.findall(r"\[([^\]]+)\]", text)
         for token_str in invalid_tokens:
-            if not re.match(r"^[A-Z]+:[A-Z_]+(?:=[^\]]+)?$", token_str):
+            if not re.match(r"^[A-Z]+:[A-Z_]+(?:=[^\]]+)?$", token_str, re.IGNORECASE):
                 issues.append(
                     ValidationIssue(
                         type=ValidationIssueType.SYNTAX_ERROR,

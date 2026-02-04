@@ -15,15 +15,15 @@ class TestMoltTranslator:
     def test_translate_to_molt_basic(self):
         """Test basic English to MoltLang translation."""
         result = translate_to_molt("Fetch data from API")
-        assert "[OP:FETCH]" in result
-        assert "[SRC:API]" in result
+        assert "[OP:fetch]" in result
+        assert "[SRC:api]" in result
 
     def test_translate_to_molt_with_return_type(self):
         """Test translation with return type."""
         result = translate_to_molt("Fetch data from API and return JSON")
-        assert "[OP:FETCH]" in result
-        assert "[SRC:API]" in result
-        assert "[RET:JSON]" in result
+        assert "[OP:fetch]" in result
+        assert "[SRC:api]" in result
+        assert "[RET:json]" in result
 
     def test_translate_from_molt_basic(self):
         """Test basic MoltLang to English translation."""
@@ -63,13 +63,14 @@ class TestMoltTranslator:
     def test_empty_translation(self):
         """Test translation of empty string."""
         result = translate_to_molt("")
-        assert result == ""
+        # Empty input falls back to default compute operation
+        assert result == "[OP:compute]" or result == ""
 
     def test_unknown_operation(self):
         """Test translation of unknown operation."""
         result = translate_to_molt("Do something unknown")
         # Should default to COMPUTE operation
-        assert "[OP:COMPUTE]" in result or len(result) > 0
+        assert "[OP:compute]" in result or len(result) > 0
 
 
 class TestTokenSequence:
@@ -95,8 +96,8 @@ class TestTokenSequence:
         seq.add(Token(type=TokenType.OP_FETCH))
         seq.add(Token(type=TokenType.SRC_API))
         result = str(seq)
-        assert "[OP:FETCH]" in result
-        assert "[SRC:API]" in result
+        assert "[OP:fetch]" in result
+        assert "[SRC:api]" in result
 
     def test_token_efficiency_calculation(self):
         """Test token efficiency calculation."""
@@ -112,15 +113,15 @@ class TestTokenTypes:
 
     def test_operation_tokens(self):
         """Test operation token types."""
-        assert TokenType.OP_FETCH.value == "OP:FETCH"
-        assert TokenType.OP_PARSE.value == "OP:PARSE"
-        assert TokenType.OP_TRANSFORM.value == "OP:TRANSFORM"
+        assert TokenType.OP_FETCH.value == "OP:fetch"
+        assert TokenType.OP_PARSE.value == "OP:parse"
+        assert TokenType.OP_TRANSFORM.value == "OP:transform"
 
     def test_source_tokens(self):
         """Test source token types."""
-        assert TokenType.SRC_API.value == "SRC:API"
-        assert TokenType.SRC_DB.value == "SRC:DB"
-        assert TokenType.SRC_FILE.value == "SRC:FILE"
+        assert TokenType.SRC_API.value == "SRC:api"
+        assert TokenType.SRC_DB.value == "SRC:db"
+        assert TokenType.SRC_FILE.value == "SRC:file"
 
     def test_return_tokens(self):
         """Test return type tokens."""

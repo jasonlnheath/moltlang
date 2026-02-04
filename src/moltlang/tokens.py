@@ -39,6 +39,7 @@ class TokenType(Enum):
     OP_MAP = "OP:map"  # Map over data
     OP_REDUCE = "OP:reduce"  # Reduce data
     OP_AGGREGATE = "OP:aggregate"  # Aggregate results
+    OP_PROCESS = "OP:process"  # Process data
 
     # Source tokens - data sources
     SRC_API = "SRC:api"  # REST/GraphQL API
@@ -58,6 +59,7 @@ class TokenType(Enum):
     PARAM_TIMEOUT = "PARAM:timeout"  # Timeout value
     PARAM_LIMIT = "PARAM:limit"  # Result limit
     PARAM_OFFSET = "PARAM:offset"  # Pagination offset
+    PARAM_TIMES = "PARAM:times"  # Retry count / repetition count
 
     # Return type tokens
     RET_JSON = "RET:json"  # JSON format
@@ -184,7 +186,6 @@ class TokenRegistry:
 
     _instance: "TokenRegistry | None" = None
     _tokens: dict[str, Token] = None
-    _custom_tokens: dict[str, Token] = field(default_factory=dict)
 
     def __new__(cls) -> "TokenRegistry":
         """Singleton pattern for token registry."""
@@ -197,6 +198,8 @@ class TokenRegistry:
         """Initialize the token registry with default tokens."""
         # Initialize _tokens as a mutable dict
         self._tokens = {}
+        # Initialize _custom_tokens as a mutable dict
+        self._custom_tokens = {}
         # Register all TokenType values as tokens
         for token_type in TokenType:
             self._tokens[token_type.value] = Token(type=token_type)
