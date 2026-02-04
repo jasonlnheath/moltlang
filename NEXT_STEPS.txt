@@ -21,6 +21,7 @@ Token Categories:
 MCP Tools:
 - molt: English→MoltLang translation
 - unmolt: MoltLang→English translation
+- molt_batch: Batch translation for multiple texts (IN PROGRESS)
 - validate_molt: Translation quality validation
 - list_tokens: Browse available tokens
 - get_efficiency: Calculate token reduction efficiency
@@ -74,7 +75,11 @@ Design Philosophy:
 
 ### Next Actions (Prioritized)
 
-1. IMMEDIATE (This Week):
+1. IMMEDIATE (Tomorrow):
+   - [ ] Follow up on Moltbook - check for new comments/questions
+   - [ ] Follow up on Clawdhub - verify skill is indexed and searchable
+   - [ ] Follow up on OpenClaw PR #33 - respond to review feedback
+   - [ ] Implement batch translation API endpoint
    - [ ] Update README.md with beta announcement
    - [ ] Create Quick Start Guide
    - [ ] Set up Discord server
