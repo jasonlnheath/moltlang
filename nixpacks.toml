@@ -1,0 +1,14 @@
+[providers]
+runtime = "node"
+
+[phases.build]
+cmds = ["cd mcp-server && npm run build"]
+
+[phases.install]
+cmds = ["cd mcp-server && npm ci", "apt-get update -qq && apt-get install -y -qq python3"]
+
+[start]
+cmd = "cd mcp-server && npm run start:http"
+
+[variables]
+PYTHONPATH = "/app/src"

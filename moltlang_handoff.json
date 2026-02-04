@@ -1,104 +1,107 @@
 {
-  "version": "0.2.0",
-  "session_id": "moltlang-cross-model-test-round-2",
-  "status": "ready",
-  "active_conversation_id": "test-001",
-  "test_round": "round-2",
-  "installation_complete": true,
-  "previous_summary": {
-    "round": "round-1",
-    "avg_efficiency": "79.89%",
-    "models_tested": ["claude-opus", "glm-4.5-air"],
-    "status": "mvp_complete"
+  "version": "0.3.0",
+  "session_id": "moltlang-semantic-grouping-implementation",
+  "status": "ready_for_implementation",
+  "active_conversation_id": "impl-001",
+  "handoff_type": "implementation_task",
+  "participant_a": "claude-opus",
+  "participant_b": "glm-4.5-air",
+  "task": {
+    "title": "Implement Semantic Token Grouping",
+    "description": "Refactor translator.py to use position-based semantic grouping for correct token ordering",
+    "plan_file": ".claude/plans/2026-02-03-PLAN-semantic-grouping-token-ordering.md",
+    "target_file": "src/moltlang/translator.py",
+    "priority": "high"
   },
-  "installation": {
-    "python_library": {
-      "status": "installed",
-      "method": "pip install -e /c/dev/moltlang",
-      "verify_command": "python -c \"from moltlang.translator import translate_to_molt; print(translate_to_molt('Fetch data from API'))\""
-    },
-    "mcp_server": {
-      "status": "built",
-      "method": "npm install && npm run build",
-      "entry_point": "C:/dev/moltlang/mcp-server/dist/index.js",
-      "run_command": "node C:/dev/moltlang/mcp-server/dist/index.js --stdio"
-    },
-    "mcp_config": {
-      "for_claude_desktop": {
-        "name": "moltlang",
-        "command": "node",
-        "args": ["C:/dev/moltlang/mcp-server/dist/index.js", "--stdio"]
-      },
-      "for_other_mcp_clients": "Use the same command/args pattern"
-    }
-  },
-  "mcp_tools_available": [
+  "implementation_steps": [
     {
-      "name": "molt",
-      "description": "English→MoltLang (50-70% token reduction)",
-      "usage": "Use with text parameter to translate English to MoltLang"
+      "step": 1,
+      "action": "Add DetectedToken dataclass",
+      "description": "Add a new dataclass at the top of translator.py to track token positions",
+      "code": "@dataclass\nclass DetectedToken:\n    token: Token\n    position: int\n    keyword: str"
     },
     {
-      "name": "unmolt",
-      "description": "MoltLang→English translation",
-      "usage": "Use with molt parameter to translate MoltLang to English"
+      "step": 2,
+      "action": "Implement _detect_with_positions() method",
+      "description": "New method that detects tokens AND tracks their character positions in the original text. This replaces the inline detection in _analyze_and_translate()"
     },
     {
-      "name": "validate_molt",
-      "description": "Validate MoltLang translation quality",
-      "usage": "Use with original and molt parameters to validate"
+      "step": 3,
+      "action": "Implement _build_semantic_groups() method",
+      "description": "Groups operations with their nearby sources/returns based on text position. First op gets first source. Returns are assigned to the operation they appear after."
     },
     {
-      "name": "list_tokens",
-      "description": "List available MoltLang tokens",
-      "usage": "Optional category parameter to filter tokens"
+      "step": 4,
+      "action": "Implement _flatten_groups() method",
+      "description": "Converts semantic groups to final TokenSequence with correct ordering: MOD -> CTL -> ERR -> [OP+SRC+RET groups] -> TYPE"
     },
     {
-      "name": "get_efficiency",
-      "description": "Calculate token efficiency",
-      "usage": "Use with english and molt parameters"
+      "step": 5,
+      "action": "Refactor _analyze_and_translate()",
+      "description": "Replace current implementation with calls to: _detect_with_positions() -> _build_semantic_groups() -> _flatten_groups() -> _apply_fallback_rules()"
+    },
+    {
+      "step": 6,
+      "action": "Run tests",
+      "description": "Run pytest to verify all 16 existing tests pass, then test with MCP tools"
     }
   ],
-  "conversations": [
+  "test_cases": [
     {
       "id": "test-001",
-      "topic": "Basic API Fetch - Regression Test",
-      "status": "pending",
-      "participant_a": "claude-opus",
-      "participant_b": "new_model",
-      "messages": [
-        {
-          "id": "msg-1",
-          "type": "initial_instruction",
-          "sender": "claude-opus",
-          "timestamp": "2026-02-03T23:00:00Z",
-          "content": "Translate to MoltLang: 'Fetch user data from the API and return JSON'",
-          "metadata": {
-            "test_id": "test-001",
-            "test_type": "regression",
-            "original_text": "Fetch user data from the API and return JSON",
-            "expected_molt": "[OP:fetch][SRC:api][RET:json]",
-            "expected_tokens": 3
-          },
-          "issues": []
-        }
-      ],
-      "created_at": "2026-02-03T23:00:00Z",
-      "updated_at": "2026-02-03T23:00:00Z"
+      "input": "Fetch user data from the API and return JSON",
+      "expected": "[OP:fetch][SRC:api][RET:json]",
+      "difficulty": "easy"
+    },
+    {
+      "id": "test-002",
+      "input": "Parse JSON data from file, validate structure, transform to CSV",
+      "expected": "[OP:parse][SRC:file][RET:json][OP:validate][OP:transform][RET:text]",
+      "difficulty": "medium",
+      "note": "KEY TEST: Multi-op with intermediate return type"
+    },
+    {
+      "id": "test-003",
+      "input": "Search database for user with ID 12345, return profile as dictionary",
+      "expected": "[OP:search][SRC:db][PARAM:key=12345][RET:dict]",
+      "difficulty": "medium"
+    },
+    {
+      "id": "test-004",
+      "input": "Try to fetch from API, retry on failure, otherwise log error",
+      "expected": "[CTL:try][OP:fetch][SRC:api][CTL:catch][ERR:retry][ERR:log]",
+      "difficulty": "hard"
+    },
+    {
+      "id": "test-005",
+      "input": "Asynchronously fetch from multiple APIs in parallel, aggregate results",
+      "expected": "[MOD:async][MOD:parallel][OP:fetch][SRC:api][OP:aggregate]",
+      "difficulty": "hard"
+    },
+    {
+      "id": "test-006",
+      "input": "Parse data and ensure it returns a properly typed list of strings",
+      "expected": "[OP:parse][RET:list][TYPE:str]",
+      "difficulty": "medium"
+    },
+    {
+      "id": "test-007",
+      "input": "Fetch from API, parse JSON response, validate against schema, transform to user objects, filter active users, return as list",
+      "expected": "[OP:fetch][SRC:api][RET:json][OP:parse][OP:validate][OP:transform][OP:filter][RET:list]",
+      "difficulty": "hard"
+    },
+    {
+      "id": "test-008",
+      "input": "Try to batch process 1000 records from database in parallel, cache results, retry failed records 3 times, log final summary",
+      "expected": "[CTL:try][MOD:batch][MOD:parallel][OP:process][SRC:db][PARAM:limit=1000][MOD:cached][CTL:catch][ERR:retry][PARAM:times=3][ERR:log]",
+      "difficulty": "expert"
     }
   ],
-  "test_plan": [
-    {"id": "test-001", "topic": "Basic API Fetch", "type": "regression"},
-    {"id": "test-002", "topic": "Multi-Operation Pipeline", "type": "regression"},
-    {"id": "test-003", "topic": "Async Parallel with Modifiers", "type": "regression"},
-    {"id": "test-004", "topic": "Complex Workflow", "type": "regression"},
-    {"id": "test-005", "topic": "MCP Tool Integration", "type": "new", "description": "Test molt tool via MCP"},
-    {"id": "test-006", "topic": "MCP Unmolt Tool", "type": "new", "description": "Test unmolt tool via MCP"},
-    {"id": "test-007", "topic": "MCP Validate Tool", "type": "new", "description": "Test validate_molt tool via MCP"},
-    {"id": "test-008", "topic": "MCP Efficiency Check", "type": "new", "description": "Test get_efficiency tool via MCP"}
-  ],
-  "ready_for_testing": true,
-  "ready_message": "MoltLang Python library installed AND MCP server built successfully! Ready for Round 2 cross-model testing with a new model.",
-  "created_at": "2026-02-03T23:00:00Z",
-  "updated_at": "2026-02-03T23:30:00Z"
+  "key_insights": {
+    "problem": "Current code detects all operations first, then all sources, then all returns - losing semantic relationships",
+    "solution": "Track character positions during detection, then group tokens based on proximity in original text",
+    "critical_rule": "Each operation should be followed by its associated source and return, not all operations grouped together"
+  },
+  "instructions_for_glm": "Read the plan at .claude/plans/2026-02-03-PLAN-semantic-grouping-token-ordering.md. Implement the changes to src/moltlang/translator.py. Focus on test-002 as the key validation case - it requires correct multi-operation token ordering. After implementation, run 'pytest' to verify existing tests pass, then test with the MCP molt tool.",
+  "created_at": "2026-02-03T21:30:00Z"
 }

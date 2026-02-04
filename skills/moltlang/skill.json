@@ -1,0 +1,29 @@
+{
+  "slug": "moltlang",
+  "displayName": "MoltLang Translator",
+  "version": "1.0.0",
+  "author": "moltlang",
+  "license": "AGPL-3.0",
+  "repository": "https://github.com/moltlang/moltlang",
+  "description": "AI-optimized language for efficient agent-to-agent communication. Reduces token usage by 50-70% for common AI operations.",
+  "commands": [
+    {
+      "name": "molt",
+      "description": "Translate English to MoltLang",
+      "usage": "molt \"Your text here\"",
+      "example": "molt \"Fetch data from the API\""
+    },
+    {
+      "name": "unmolt",
+      "description": "Translate MoltLang to English",
+      "usage": "unmolt \"[OP:fetch][SRC:api]\"",
+      "example": "unmolt \"[OP:fetch][SRC:api]\""
+    },
+    {
+      "name": "list_tokens",
+      "description": "List available MoltLang tokens",
+      "usage": "list_tokens",
+      "example": "list_tokens"
+    }
+  ]
+}

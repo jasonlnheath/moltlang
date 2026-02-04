@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "moltlang": {
+      "command": "node",
+      "args": ["C:/dev/moltlang/mcp-server/dist/index.js", "--stdio"],
+      "env": {
+        "PYTHONPATH": "C:/dev/moltlang/src",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

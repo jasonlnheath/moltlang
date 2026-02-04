@@ -1,0 +1,11 @@
+[phases.build]
+cmds = ["npm run build"]
+
+[phases.install]
+cmds = ["npm ci", "pip install moltlang", "pip install --target ./python-libs moltlang"]
+
+[start]
+cmd = "npm run start:http"
+
+[variables]
+PYTHONPATH = "/app/python-libs"

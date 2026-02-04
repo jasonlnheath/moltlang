@@ -230,7 +230,7 @@ export async function listTokens(
   const categoryLogic = category ? `
 tokens = [t for t in TokenType if t.name.startswith(token_type_prefix)]
 ` : 'tokens = list(TokenType)';
-  const categoryOutput = category ? 'output["category"] = "${category}"' : '';
+  const categoryOutput = category ? `output["category"] = "${category}"` : '';
 
   const pythonCode = `
 import sys
