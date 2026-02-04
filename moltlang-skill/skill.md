@@ -1,6 +1,6 @@
 # MoltLang Translator
 
-slug: moltlang
+slug: moltlang-skill
 name: MoltLang Translator
 
 AI-optimized language for efficient agent-to-agent communication. Reduces token usage by 50-70% for common AI operations.
